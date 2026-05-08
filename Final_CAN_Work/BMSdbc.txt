@@ -1,0 +1,253 @@
+VERSION ""
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: BMS_Controller VCU Diagnostic_Tool Charger Thermal_System
+
+/* ============================================================================
+   GROUP 1: SENSOR & MONITORING MESSAGES
+   ============================================================================ */
+
+/* MESSAGE 0x100: PACK_MEASUREMENTS (10ms) */
+BO_ 256 Pack_Measurements: 8 BMS_Controller
+ SG_ Pack_Voltage : 0|16@1+ (0.1,0) [0|1000] "V" VCU Diagnostic_Tool
+ SG_ Pack_Current : 16|16@1- (0.1,0) [-400|400] "A" VCU Diagnostic_Tool
+ SG_ Pack_Temp_Avg : 32|8@1+ (1,-40) [-40|150] "degC" VCU Diagnostic_Tool
+ SG_ Pack_Temp_Max : 40|8@1+ (1,-40) [-40|150] "degC" VCU Diagnostic_Tool
+
+/* MESSAGE 0x101: CELL_MONITORING (50ms) */
+BO_ 257 Cell_Monitoring: 8 BMS_Controller
+ SG_ Cell_Voltage_Max : 0|16@1+ (0.001,0) [0|5] "V" VCU Diagnostic_Tool
+ SG_ Cell_Voltage_Min : 16|16@1+ (0.001,0) [0|5] "V" VCU Diagnostic_Tool
+ SG_ Cell_Temp_Max : 32|8@1+ (1,-40) [-40|150] "degC" VCU Diagnostic_Tool
+ SG_ Cell_Temp_Min : 40|8@1+ (1,-40) [-40|150] "degC" VCU Diagnostic_Tool
+
+/* MESSAGE 0x102: SENSOR_HEALTH (100ms) */
+BO_ 258 Sensor_Health: 8 BMS_Controller
+ SG_ Voltage_Sensors_Status : 0|8@1+ (1,0) [0|3] "" VCU Diagnostic_Tool
+ SG_ Current_Sensors_Status : 8|8@1+ (1,0) [0|3] "" VCU Diagnostic_Tool
+ SG_ Temp_Sensors_Status : 16|8@1+ (1,0) [0|3] "" VCU Diagnostic_Tool
+
+/* ============================================================================
+   GROUP 2: STATE ESTIMATION MESSAGES
+   ============================================================================ */
+
+/* MESSAGE 0x200: BMS_STATE_ESTIMATION (10ms) */
+BO_ 512 BMS_State_Estimation: 8 BMS_Controller
+ SG_ SOC : 0|8@1+ (1,0) [0|100] "%" VCU Diagnostic_Tool Charger
+ SG_ SOH : 8|8@1+ (1,0) [0|100] "%" VCU Diagnostic_Tool
+ SG_ SOP_Discharge : 16|16@1+ (1,0) [0|200] "kW" VCU Diagnostic_Tool
+ SG_ SOP_Charge : 32|16@1+ (1,0) [0|200] "kW" VCU Diagnostic_Tool
+
+/* MESSAGE 0x201: RANGE_ENERGY_INFO (100ms) */
+BO_ 513 Range_Energy_Info: 8 BMS_Controller
+ SG_ Remaining_Range : 0|16@1+ (1,0) [0|1000] "km" VCU Diagnostic_Tool
+ SG_ Energy_Remaining : 16|16@1+ (0.1,0) [0|200] "kWh" VCU Diagnostic_Tool
+ SG_ Avg_Energy_Consumption : 32|16@1+ (0.01,0) [0|50] "kWh/100km" VCU Diagnostic_Tool
+
+/* ============================================================================
+   GROUP 3: SAFETY & PROTECTION MESSAGES
+   ============================================================================ */
+
+/* MESSAGE 0x300: SAFETY_BUS (10ms) - ID: 768 */
+BO_ 768 Safety_Bus: 8 BMS_Controller
+ SG_ Safe_State_Active : 0|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+ SG_ Charge_Inhibit : 8|8@1+ (1,0) [0|1] "" VCU Charger Diagnostic_Tool
+ SG_ Discharge_Inhibit : 16|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+ SG_ Operating_Command : 24|8@1+ (1,0) [0|5] "" VCU Diagnostic_Tool
+
+/* MESSAGE 0x301: CONTACTOR_CONTROL (10ms) - ID: 769 */
+BO_ 769 Contactor_Control: 8 BMS_Controller
+ SG_ Contactor_Cmd_Request : 0|8@1+ (1,0) [0|7] "" VCU Diagnostic_Tool
+ SG_ Main_Contactor_State : 8|8@1+ (1,0) [0|3] "" VCU Diagnostic_Tool
+ SG_ Precharge_State : 16|8@1+ (1,0) [0|3] "" VCU Diagnostic_Tool
+
+/* MESSAGE 0x302: FAULT_STATUS (20ms) - ID: 770 */
+BO_ 770 Fault_Status: 8 BMS_Controller
+ SG_ Overvoltage_Fault : 0|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+ SG_ Undervoltage_Fault : 8|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+ SG_ ShortCircuit_Fault : 16|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+ SG_ Overcurrent_Fault : 24|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+ SG_ UnderTemp_Fault : 32|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+ SG_ OverTemp_Fault : 40|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+ SG_ Insulation_Fault : 48|8@1+ (1,0) [0|1] "" VCU Diagnostic_Tool
+
+/* ============================================================================
+   DIAGNOSTIC SYSTEM MESSAGES
+   ============================================================================ */
+
+/* MESSAGE 0x400: DIAGNOSTIC_DTC (50ms) - ID: 1024 */
+BO_ 1024 Diagnostic_DTC: 8 BMS_Controller
+ SG_ DTC_Code_1 : 0|16@1+ (1,0) [0|65535] "" Diagnostic_Tool
+ SG_ DTC_Severity_1 : 16|8@1+ (1,0) [0|3] "" Diagnostic_Tool
+
+/* MESSAGE 0x401: UDS_REQUEST (Event-triggered) - ID: 1025 */
+BO_ 1025 UDS_Request: 8 Diagnostic_Tool
+ SG_ UDS_Service_ID : 0|8@1+ (1,0) [0|255] "" BMS_Controller
+ SG_ UDS_SubFunction : 8|8@1+ (1,0) [0|255] "" BMS_Controller
+ SG_ UDS_Data_Byte_1 : 16|8@1+ (1,0) [0|255] "" BMS_Controller
+ SG_ UDS_Data_Byte_2 : 24|8@1+ (1,0) [0|255] "" BMS_Controller
+ SG_ UDS_Data_Byte_3 : 32|8@1+ (1,0) [0|255] "" BMS_Controller
+
+/* MESSAGE 0x402: UDS_RESPONSE (Event-triggered) - ID: 1026 */
+BO_ 1026 UDS_Response: 8 BMS_Controller
+ SG_ UDS_Positive_Response : 0|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+ SG_ UDS_Response_Data_1 : 8|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+ SG_ UDS_Response_Data_2 : 16|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+ SG_ UDS_Response_Data_3 : 24|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+ SG_ UDS_Negative_Response_Code : 32|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+
+/* ============================================================================
+   CHARGING SYSTEM MESSAGES
+   ============================================================================ */
+
+/* MESSAGE 0x500: CHARGING_CONTROL (20ms) - ID: 1280 */
+BO_ 1280 Charging_Control: 8 BMS_Controller
+ SG_ Max_Charge_Voltage : 0|16@1+ (0.1,0) [0|1000] "V" Charger Diagnostic_Tool
+ SG_ Max_Charge_Current : 16|16@1+ (0.1,0) [0|400] "A" Charger Diagnostic_Tool
+ SG_ Charge_Termination_Voltage : 32|16@1+ (0.1,0) [0|1000] "V" Charger Diagnostic_Tool
+ SG_ Charge_Mode_Request : 48|8@1+ (1,0) [0|3] "" Charger Diagnostic_Tool
+
+/* MESSAGE 0x501: CHARGING_STATUS (50ms) - ID: 1281 */
+BO_ 1281 Charging_Status: 8 BMS_Controller
+ SG_ Plug_Status : 0|8@1+ (1,0) [0|1] "" VCU Charger Diagnostic_Tool
+ SG_ Charging_Active : 8|8@1+ (1,0) [0|1] "" VCU Charger Diagnostic_Tool
+ SG_ Charge_Complete : 16|8@1+ (1,0) [0|1] "" VCU Charger Diagnostic_Tool
+
+/* ============================================================================
+   COOLING SYSTEM MESSAGES
+   ============================================================================ */
+
+/* MESSAGE 0x600: THERMAL_CONTROL (20ms) - ID: 1536 */
+BO_ 1536 Thermal_Control: 8 BMS_Controller
+ SG_ Cooling_Fan_Req : 0|8@1+ (1,0) [0|100] "%" Thermal_System Diagnostic_Tool
+ SG_ Pump_Speed_Req : 8|8@1+ (1,0) [0|100] "%" Thermal_System Diagnostic_Tool
+ SG_ Thermal_Mode_Feedback : 16|8@1+ (1,0) [0|4] "" Thermal_System Diagnostic_Tool
+ SG_ Actual_Temperature : 24|8@1+ (1,0) [0|100] "degC" Thermal_System Diagnostic_Tool
+
+/* ============================================================================
+   VCU INTERFACE MESSAGES
+   ============================================================================ */
+
+/* MESSAGE 0x700: VCU_COMMANDS (10ms) - ID: 1792 */
+BO_ 1792 VCU_Commands: 8 VCU
+ SG_ VCU_Mode_Request : 0|8@1+ (1,0) [0|5] "" BMS_Controller
+ SG_ Power_Limit_Req : 8|16@1+ (1,0) [0|200] "kW" BMS_Controller
+
+/* MESSAGE 0x702: BMS_TO_VCU (10ms) - ID: 1794 */
+BO_ 1794 BMS_to_VCU: 8 BMS_Controller
+ SG_ BMS_Operating_Mode : 0|8@1+ (1,0) [0|5] "" VCU
+ SG_ BMS_Fault_Status : 8|8@1+ (1,0) [0|3] "" VCU
+
+/* ============================================================================
+   TRANSMITTER DEFINITIONS
+   ============================================================================ */
+BO_TX_BU_ 256 : BMS_Controller;
+BO_TX_BU_ 257 : BMS_Controller;
+BO_TX_BU_ 258 : BMS_Controller;
+BO_TX_BU_ 512 : BMS_Controller;
+BO_TX_BU_ 513 : BMS_Controller;
+BO_TX_BU_ 768 : BMS_Controller;
+BO_TX_BU_ 769 : BMS_Controller;
+BO_TX_BU_ 770 : BMS_Controller;
+BO_TX_BU_ 1024 : BMS_Controller;
+BO_TX_BU_ 1025 : Diagnostic_Tool;
+BO_TX_BU_ 1026 : BMS_Controller;
+BO_TX_BU_ 1280 : BMS_Controller;
+BO_TX_BU_ 1281 : BMS_Controller;
+BO_TX_BU_ 1536 : BMS_Controller;
+BO_TX_BU_ 1792 : VCU;
+BO_TX_BU_ 1794 : BMS_Controller;
+
+/* ============================================================================
+   COMMENTS
+   ============================================================================ */
+CM_ BO_ 256 "Pack-level telemetry: Voltage, Current, Avg/Max Temp";
+CM_ BO_ 257 "Cell-level monitoring: Min/Max Voltage & Temperature";
+CM_ BO_ 258 "Sensor health status per measurement type";
+CM_ BO_ 512 "Core battery states: SOC, SOH, SOP (Discharge/Charge)";
+CM_ BO_ 513 "Driver info: Range, Energy, Consumption";
+CM_ BO_ 768 "Critical safety bus: Safe state, Inhibits, Operating command";
+CM_ BO_ 769 "Contactor states & precharge control";
+CM_ BO_ 770 "Active fault flags per protection type";
+CM_ BO_ 1024 "Active DTC code & severity level";
+CM_ BO_ 1025 "UDS diagnostic request from external tool";
+CM_ BO_ 1026 "UDS diagnostic response from BMS";
+CM_ BO_ 1280 "Charging limits & mode request";
+CM_ BO_ 1281 "Charging session status";
+CM_ BO_ 1536 "Thermal management commands & feedback";
+CM_ BO_ 1792 "VCU mode request & power limit";
+CM_ BO_ 1794 "BMS operating mode & fault status to VCU";
+
+/* ============================================================================
+   VALUE TABLES (ENUMERATIONS) - FIXED IDs
+   ============================================================================ */
+VAL_ 258 Voltage_Sensors_Status 0 "OK" 1 "Warning" 2 "Error" 3 "Unavailable";
+VAL_ 258 Current_Sensors_Status 0 "OK" 1 "Warning" 2 "Error" 3 "Unavailable";
+VAL_ 258 Temp_Sensors_Status 0 "OK" 1 "Warning" 2 "Error" 3 "Unavailable";
+
+VAL_ 768 Operating_Command 0 "None" 1 "Drive" 2 "Charge" 3 "Limp" 4 "SafeShutdown" 5 "Maintenance";
+VAL_ 769 Contactor_Cmd_Request 0 "OpenAll" 1 "CloseMain" 2 "Precharge" 3 "CloseCharge" 4 "EmergencyOpen";
+VAL_ 769 Main_Contactor_State 0 "Open" 1 "Closed" 2 "Precharging" 3 "Fault";
+VAL_ 769 Precharge_State 0 "Open" 1 "Closed" 2 "Active" 3 "Fault";
+
+VAL_ 1024 DTC_Severity_1 0 "None" 1 "Low" 2 "Medium" 3 "High";
+
+VAL_ 1280 Charge_Mode_Request 0 "None" 1 "AC_Charging" 2 "DC_Fast" 3 "Wireless";
+VAL_ 1281 Plug_Status 0 "Disconnected" 1 "AC_Connected" 2 "DC_Connected";
+
+VAL_ 1536 Thermal_Mode_Feedback 0 "Off" 1 "Passive" 2 "ActiveCooling" 3 "ActiveHeating" 4 "Emergency";
+
+VAL_ 1792 VCU_Mode_Request 0 "Shutdown" 1 "Standby" 2 "Init" 3 "Normal" 4 "Fault" 5 "Charging";
+VAL_ 1794 BMS_Operating_Mode 0 "Shutdown" 1 "Standby" 2 "Init" 3 "Normal" 4 "Fault" 5 "Charging";
+VAL_ 1794 BMS_Fault_Status 0 "None" 1 "Warning" 2 "Error" 3 "Critical";
+
+/* ============================================================================
+   TIMING ATTRIBUTES
+   ============================================================================ */
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_DEF_ "GenMsgCycleTime" 100;
+
+BA_ "GenMsgCycleTime" BO_ 256 10;
+BA_ "GenMsgCycleTime" BO_ 257 50;
+BA_ "GenMsgCycleTime" BO_ 258 100;
+BA_ "GenMsgCycleTime" BO_ 512 10;
+BA_ "GenMsgCycleTime" BO_ 513 100;
+BA_ "GenMsgCycleTime" BO_ 768 10;
+BA_ "GenMsgCycleTime" BO_ 769 10;
+BA_ "GenMsgCycleTime" BO_ 770 20;
+BA_ "GenMsgCycleTime" BO_ 1024 50;
+BA_ "GenMsgCycleTime" BO_ 1025 0;
+BA_ "GenMsgCycleTime" BO_ 1026 0;
+BA_ "GenMsgCycleTime" BO_ 1280 20;
+BA_ "GenMsgCycleTime" BO_ 1281 50;
+BA_ "GenMsgCycleTime" BO_ 1536 20;
+BA_ "GenMsgCycleTime" BO_ 1792 10;
+BA_ "GenMsgCycleTime" BO_ 1794 10;
