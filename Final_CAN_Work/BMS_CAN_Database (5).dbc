@@ -1,0 +1,243 @@
+VERSION ""
+
+
+NS_ : 
+        NS_DESC_
+        CM_
+        BA_DEF_
+        BA_
+        VAL_
+        CAT_DEF_
+        CAT_
+        FILTER
+        BA_DEF_DEF_
+        EV_DATA_
+        ENVVAR_DATA_
+        SGTYPE_
+        SGTYPE_VAL_
+        BA_DEF_SGTYPE_
+        BA_SGTYPE_
+        SIG_TYPE_REF_
+        VAL_TABLE_
+        SIG_GROUP_
+        SIG_VALTYPE_
+        SIGTYPE_VALTYPE_
+        BO_TX_BU_
+        BA_DEF_REL_
+        BA_REL_
+        BA_DEF_DEF_REL_
+        BU_SG_REL_
+        BU_EV_REL_
+        BU_BO_REL_
+        SG_MUL_VAL_
+
+BS_:
+
+BU_: BMS_Controller VCU Diagnostic_Tool Charger Thermal_System
+VAL_TABLE_ vtOnOff 1 "ON" 0 "OFF" ;
+VAL_TABLE_ vtFaultStatus 1 "Fault_Active" 0 "No_Fault" ;
+VAL_TABLE_ vtPlugStatus 2 "Plugged_DC" 1 "Plugged_AC" 0 "Unplugged" ;
+VAL_TABLE_ vtSensorHealth 3 "Not_Available" 2 "Failed" 1 "Degraded" 0 "OK" ;
+VAL_TABLE_ vtContactorState 3 "Fault" 2 "Closed" 1 "Closing" 0 "Open" ;
+VAL_TABLE_ vtChargeMode 3 "CC_CV" 2 "CV" 1 "CC" 0 "Off" ;
+VAL_TABLE_ vtDTCSeverity 3 "Critical" 2 "Error" 1 "Warning" 0 "Info" ;
+VAL_TABLE_ vtBMSOperatingMode 5 "Service" 4 "Fault" 3 "Charge" 2 "Drive" 1 "Standby" 0 "Init" ;
+VAL_TABLE_ vtVCUOperatingMode 5 "Fault" 4 "Limp_Home" 3 "Charge" 2 "Run" 1 "Crank" 0 "Off" ;
+VAL_TABLE_ vtThermalMode 4 "Fault" 3 "High" 2 "Medium" 1 "Low" 0 "Off" ;
+VAL_TABLE_ vtContactorCmd 7 "Emergency_Open" 6 "Open_All" 5 "Close_All" 4 "Open_Precharge" 3 "Close_Precharge" 2 "Open_Main" 1 "Close_Main" 0 "No_Cmd" ;
+
+BO_ 256 frmPackMeasurements: 6 BMS_Controller
+ SG_ sigPackVoltage : 0|16@1+ (0.1,0) [0|1000] "V" Vector__XXX
+ SG_ sigPackCurrent : 16|16@1- (0.1,0) [-400|400] "A" Vector__XXX
+ SG_ sigPackTempAvg : 32|8@1+ (1,-40) [-40|150] "degC" Vector__XXX
+ SG_ sigPackTempMax : 40|8@1+ (1,-40) [-40|150] "degC" Vector__XXX
+
+BO_ 257 frmCellMonitoring: 6 BMS_Controller
+ SG_ sigCellVoltageMax : 0|16@1+ (0.001,0) [0|5] "V" Vector__XXX
+ SG_ sigCellVoltageMin : 16|16@1+ (0.001,0) [0|5] "V" Vector__XXX
+ SG_ sigCellTempMax : 32|8@1+ (1,-40) [-40|150] "degC" Vector__XXX
+ SG_ sigCellTempMin : 40|8@1+ (1,-40) [-40|150] "degC" Vector__XXX
+
+BO_ 258 frmSensorHealth: 3 BMS_Controller
+ SG_ sigVoltageSensorsStatus : 0|8@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ sigCurrentSensorsStatus : 8|8@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ sigTempSensorsStatus : 16|8@1+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 259 frmBMSStateEstimation: 6 BMS_Controller
+ SG_ sigSOC : 0|8@1+ (1,0) [0|100] "%" VCU,Charger
+ SG_ sigSOH : 8|8@1+ (1,0) [0|100] "%" Vector__XXX
+ SG_ sigSOPDischarge : 16|16@1+ (1,0) [0|200] "kW" Vector__XXX
+ SG_ sigSOPCharge : 32|16@1+ (1,0) [0|200] "kW" Vector__XXX
+
+BO_ 260 frmRangeEnergyInfo: 6 BMS_Controller
+ SG_ sigRemainingRange : 0|16@1+ (1,0) [0|1000] "km" Vector__XXX
+ SG_ sigEnergyRemaining : 16|16@1+ (0.1,0) [0|200] "kWh" Vector__XXX
+ SG_ sigAvgEnergyConsumption : 32|16@1+ (0.01,0) [0|50] "kWh/100km" Vector__XXX
+
+BO_ 261 frmSafetyBus: 4 BMS_Controller
+ SG_ sigSafeStateActive : 0|8@1+ (1,0) [0|1] "" VCU,Charger
+ SG_ sigChargeInhibit : 8|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ sigDischargeInhibit : 16|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ sigOperatingCommand : 24|8@1+ (1,0) [0|5] "" Vector__XXX
+
+BO_ 262 frmContactorControl: 3 BMS_Controller
+ SG_ sigContactorCmdRequest : 0|8@1+ (1,0) [0|7] "" VCU
+ SG_ sigMainContactorState : 8|8@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ sigPrechargeState : 16|8@1+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 263 frmFaultStatus: 7 BMS_Controller
+ SG_ sigOvervoltageFault : 0|8@1+ (1,0) [0|1] "" VCU
+ SG_ sigUndervoltageFault : 8|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ sigShortCircuitFault : 16|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ sigOvercurrentFault : 24|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ sigUnderTempFault : 32|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ sigOverTempFault : 40|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ sigInsulationFault : 48|8@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 264 frmDiagnosticDTC: 3 BMS_Controller
+ SG_ sigDTCCode1 : 0|16@1+ (1,0) [0|65535] "" Diagnostic_Tool
+ SG_ sigDTCSeverity1 : 16|8@1+ (1,0) [0|3] "" Diagnostic_Tool
+
+BO_ 384 frmUDSRequest: 8 Diagnostic_Tool
+ SG_ sigUDSServiceID : 0|8@1+ (1,0) [0|255] "" BMS_Controller
+ SG_ sigUDSSubFunction : 8|8@1+ (1,0) [0|255] "" BMS_Controller
+ SG_ sigUDSDataByte1 : 16|8@1+ (1,0) [0|255] "" BMS_Controller
+ SG_ sigUDSDataByte2 : 24|8@1+ (1,0) [0|255] "" BMS_Controller
+ SG_ sigUDSDataByte3 : 32|8@1+ (1,0) [0|255] "" BMS_Controller
+
+BO_ 385 frmUDSResponse: 8 BMS_Controller
+ SG_ sigUDSPositiveResponse : 0|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+ SG_ sigUDSResponseData1 : 8|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+ SG_ sigUDSResponseData2 : 16|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+ SG_ sigUDSResponseData3 : 24|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+ SG_ sigUDSNegativeResponseCode : 32|8@1+ (1,0) [0|255] "" Diagnostic_Tool
+
+BO_ 265 frmChargingControl: 7 BMS_Controller
+ SG_ sigMaxChargeVoltage : 0|16@1+ (0.1,0) [0|1000] "V" Charger
+ SG_ sigMaxChargeCurrent : 16|16@1+ (0.1,0) [0|400] "A" Charger
+ SG_ sigChargeTerminationVoltage : 32|16@1+ (0.1,0) [0|1000] "V" Charger
+ SG_ sigChargeModeRequest : 48|8@1+ (1,0) [0|3] "" Charger
+
+BO_ 266 frmChargingStatus: 3 BMS_Controller
+ SG_ sigPlugStatus : 0|8@1+ (1,0) [0|2] "" VCU,Charger
+ SG_ sigChargingActive : 8|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ sigChargeComplete : 16|8@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 267 frmThermalControl: 4 BMS_Controller
+ SG_ sigCoolingFanReq : 0|8@1+ (1,0) [0|100] "%" Thermal_System
+ SG_ sigPumpSpeedReq : 8|8@1+ (1,0) [0|100] "%" Thermal_System
+ SG_ sigThermalModeFeedback : 16|8@1+ (1,0) [0|4] "" Thermal_System
+ SG_ sigActualTemperature : 24|8@1+ (1,0) [0|100] "degC" Thermal_System
+
+BO_ 320 frmVCUCommands: 3 VCU
+ SG_ sigVCUModeRequest : 0|8@1+ (1,0) [0|5] "" BMS_Controller
+ SG_ sigPowerLimitReq : 8|16@1+ (1,0) [0|200] "kW" BMS_Controller
+
+BO_ 321 frmBMStoVCU: 2 BMS_Controller
+ SG_ sigBMSOperatingMode : 0|8@1+ (1,0) [0|5] "" VCU
+ SG_ sigBMSFaultStatus : 8|8@1+ (1,0) [0|3] "" VCU
+
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 500;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 50000;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 100;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 10;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","NoMsgSendType","NotUsed";
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 100000;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed";
+BA_DEF_ SG_  "GenSigStartValue" FLOAT 0 100000000000;
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 100;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_ "GenMsgCycleTime" BO_ 256 10;
+BA_ "GenMsgSendType" BO_ 256 0;
+BA_ "GenMsgStartDelayTime" BO_ 256 0;
+BA_ "GenMsgCycleTime" BO_ 257 50;
+BA_ "GenMsgSendType" BO_ 257 0;
+BA_ "GenMsgStartDelayTime" BO_ 257 5;
+BA_ "GenMsgCycleTime" BO_ 258 100;
+BA_ "GenMsgSendType" BO_ 258 0;
+BA_ "GenMsgStartDelayTime" BO_ 258 10;
+BA_ "GenMsgCycleTime" BO_ 259 10;
+BA_ "GenMsgSendType" BO_ 259 0;
+BA_ "GenMsgStartDelayTime" BO_ 259 0;
+BA_ "GenMsgCycleTime" BO_ 260 100;
+BA_ "GenMsgSendType" BO_ 260 0;
+BA_ "GenMsgStartDelayTime" BO_ 260 15;
+BA_ "GenMsgCycleTime" BO_ 261 10;
+BA_ "GenMsgSendType" BO_ 261 0;
+BA_ "GenMsgStartDelayTime" BO_ 261 0;
+BA_ "GenMsgCycleTime" BO_ 262 10;
+BA_ "GenMsgSendType" BO_ 262 0;
+BA_ "GenMsgStartDelayTime" BO_ 262 0;
+BA_ "GenMsgCycleTime" BO_ 263 20;
+BA_ "GenMsgSendType" BO_ 263 0;
+BA_ "GenMsgStartDelayTime" BO_ 263 5;
+BA_ "GenMsgCycleTime" BO_ 264 50;
+BA_ "GenMsgSendType" BO_ 264 0;
+BA_ "GenMsgStartDelayTime" BO_ 264 10;
+BA_ "GenMsgCycleTime" BO_ 384 0;
+BA_ "GenMsgSendType" BO_ 384 9;
+BA_ "GenMsgStartDelayTime" BO_ 384 0;
+BA_ "GenMsgCycleTime" BO_ 385 0;
+BA_ "GenMsgSendType" BO_ 385 9;
+BA_ "GenMsgStartDelayTime" BO_ 385 0;
+BA_ "GenMsgCycleTime" BO_ 265 20;
+BA_ "GenMsgSendType" BO_ 265 0;
+BA_ "GenMsgStartDelayTime" BO_ 265 5;
+BA_ "GenMsgCycleTime" BO_ 266 50;
+BA_ "GenMsgSendType" BO_ 266 0;
+BA_ "GenMsgStartDelayTime" BO_ 266 10;
+BA_ "GenMsgCycleTime" BO_ 267 20;
+BA_ "GenMsgSendType" BO_ 267 0;
+BA_ "GenMsgStartDelayTime" BO_ 267 5;
+BA_ "GenMsgCycleTime" BO_ 320 10;
+BA_ "GenMsgSendType" BO_ 320 0;
+BA_ "GenMsgStartDelayTime" BO_ 320 0;
+BA_ "GenMsgCycleTime" BO_ 321 10;
+BA_ "GenMsgSendType" BO_ 321 0;
+BA_ "GenMsgStartDelayTime" BO_ 321 0;
+BA_ "GenSigStartValue" SG_ 256 sigPackVoltage 0;
+BA_ "GenSigStartValue" SG_ 256 sigPackCurrent 0;
+BA_ "GenSigStartValue" SG_ 259 sigSOC 0;
+BA_ "GenSigStartValue" SG_ 260 sigRemainingRange 0;
+BA_ "GenSigStartValue" SG_ 261 sigSafeStateActive 0;
+BA_ "GenSigStartValue" SG_ 263 sigOvervoltageFault 0;
+BA_ "GenSigStartValue" SG_ 263 sigUndervoltageFault 0;
+BA_ "GenSigStartValue" SG_ 263 sigShortCircuitFault 0;
+BA_ "GenSigStartValue" SG_ 263 sigOvercurrentFault 0;
+BA_ "GenSigStartValue" SG_ 263 sigUnderTempFault 0;
+BA_ "GenSigStartValue" SG_ 263 sigOverTempFault 0;
+BA_ "GenSigStartValue" SG_ 263 sigInsulationFault 0;
+BA_ "GenSigStartValue" SG_ 266 sigChargingActive 0;
+BA_ "GenSigStartValue" SG_ 266 sigChargeComplete 0;
+VAL_ 258 sigVoltageSensorsStatus 0 "OK" 1 "Degraded" 2 "Failed" 3 "Not_Available" ;
+VAL_ 258 sigCurrentSensorsStatus 0 "OK" 1 "Degraded" 2 "Failed" 3 "Not_Available" ;
+VAL_ 258 sigTempSensorsStatus 0 "OK" 1 "Degraded" 2 "Failed" 3 "Not_Available" ;
+VAL_ 261 sigSafeStateActive 0 "Not_Active" 1 "Active" ;
+VAL_ 261 sigChargeInhibit 0 "Allowed" 1 "Inhibited" ;
+VAL_ 261 sigDischargeInhibit 0 "Allowed" 1 "Inhibited" ;
+VAL_ 261 sigOperatingCommand 0 "Init" 1 "Standby" 2 "Drive" 3 "Charge" 4 "Fault" 5 "Service" ;
+VAL_ 262 sigContactorCmdRequest 0 "No_Cmd" 1 "Close_Main" 2 "Open_Main" 3 "Close_Precharge" 4 "Open_Precharge" 5 "Close_All" 6 "Open_All" 7 "Emergency_Open" ;
+VAL_ 262 sigMainContactorState 0 "Open" 1 "Closing" 2 "Closed" 3 "Fault" ;
+VAL_ 262 sigPrechargeState 0 "Open" 1 "Closing" 2 "Closed" 3 "Fault" ;
+VAL_ 263 sigOvervoltageFault 0 "No_Fault" 1 "Fault_Active" ;
+VAL_ 263 sigUndervoltageFault 0 "No_Fault" 1 "Fault_Active" ;
+VAL_ 263 sigShortCircuitFault 0 "No_Fault" 1 "Fault_Active" ;
+VAL_ 263 sigOvercurrentFault 0 "No_Fault" 1 "Fault_Active" ;
+VAL_ 263 sigUnderTempFault 0 "No_Fault" 1 "Fault_Active" ;
+VAL_ 263 sigOverTempFault 0 "No_Fault" 1 "Fault_Active" ;
+VAL_ 263 sigInsulationFault 0 "No_Fault" 1 "Fault_Active" ;
+VAL_ 264 sigDTCSeverity1 0 "Info" 1 "Warning" 2 "Error" 3 "Critical" ;
+VAL_ 265 sigChargeModeRequest 0 "Off" 1 "CC" 2 "CV" 3 "CC_CV" ;
+VAL_ 266 sigPlugStatus 0 "Unplugged" 1 "Plugged_AC" 2 "Plugged_DC" ;
+VAL_ 266 sigChargingActive 0 "Not_Charging" 1 "Charging" ;
+VAL_ 266 sigChargeComplete 0 "Incomplete" 1 "Complete" ;
+VAL_ 267 sigThermalModeFeedback 0 "Off" 1 "Low" 2 "Medium" 3 "High" 4 "Fault" ;
+VAL_ 320 sigVCUModeRequest 0 "Off" 1 "Crank" 2 "Run" 3 "Charge" 4 "Limp_Home" 5 "Fault" ;
+VAL_ 321 sigBMSOperatingMode 0 "Init" 1 "Standby" 2 "Drive" 3 "Charge" 4 "Fault" 5 "Service" ;
+VAL_ 321 sigBMSFaultStatus 0 "No_Fault" 1 "Warning" 2 "Error" 3 "Critical" ;
